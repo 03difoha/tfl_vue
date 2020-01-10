@@ -1,24 +1,31 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <BarChart></BarChart>
+    <label for="flavor">Favorite ice cream flavor?</label>
+    <button @input="changed" name="flavor"></button>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BarChart from "./components/BarChart";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    HelloWorld
+    BarChart
+  },
+  methods: {
+    changed: function() {
+      // this.$store.commit("change", event.target.value);
+      this.$store.dispatch("loadDailyData");
+    }
   }
-}
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
