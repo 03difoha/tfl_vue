@@ -2,13 +2,12 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 
-// import db from "./db";
-
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    dailyChart: ""
+    dailyChart: {},
+    carParkNames: []
   },
   actions: {
     loadDailyData({ commit }) {
@@ -20,14 +19,28 @@ export const store = new Vuex.Store({
         .catch(error => {
           throw new Error(`API ${error}`);
         });
+    },
+    loadCarParkNames({ commit }) {
+      axios
+        .get("http://localhost:3000/carParkNames")
+        .then(result => {
+          commit("setCarparkNames", result.data);
+        })
+        .catch(error => {
+          throw new Error(`API ${error}`);
+        });
     }
   },
   mutations: {
     change(state, dailyChart) {
       state.dailyChart = dailyChart;
+    },
+    setCarparkNames(state, carParkNames) {
+      state.carParkNames = carParkNames;
     }
   },
   getters: {
-    dailyChart: state => state.dailyChart
+    dailyChart: state => state.dailyChart,
+    carParkNames: state => state.carParkNames
   }
 });
