@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-    <Bar-chart v-if="chartdata" :chartdata="chartdata" :options="options" />
+    <Bar-chart
+      v-if="this.$store.getters.dailyChart"
+      :chartdata="this.$store.getters.dailyChart"
+      :options="options"
+    />
     {{ this.$store.getters.dailyChart }}
   </div>
 </template>
@@ -13,18 +17,11 @@ export default {
   components: { BarChart },
   data: () => ({
     loaded: false,
-    chartdata: false
-  }),
-  mounted() {
-    this.loaded = false;
-    try {
-      this.chartdata = this.$store.getters.dailyChart;
-      // this.chartdata = userlist;
-      this.loaded = true;
-      // console.log(userlist);
-    } catch (e) {
-      console.error(e);
+    chartdata: false,
+    options: {
+      responsive: true
     }
-  }
+  }),
+  mounted() {}
 };
 </script>

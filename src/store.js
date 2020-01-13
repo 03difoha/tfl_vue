@@ -6,13 +6,13 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    dailyChart: {},
+    dailyChart: false,
     carParkNames: []
   },
   actions: {
-    loadDailyData({ commit }) {
-      axios
-        .get("http://localhost:3000/dailyChart/Barkingside_Stn/3")
+    async loadDailyData({ commit }, req) {
+      await axios
+        .get(`http://localhost:3000/dailyChart/${req.station}/${req.day}`)
         .then(result => {
           commit("change", result.data);
         })

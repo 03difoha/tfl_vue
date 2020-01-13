@@ -12,10 +12,9 @@
     "axios": "^0.19.1",
     "chart.js": "^2.9.3",
     "core-js": "^3.4.4",
-    "mdbvue": "6.2.0",
-    "mysql": "^2.17.1",
     "vue": "^2.6.10",
     "vue-chartjs": "^3.5.0",
+    "vue-material": "^1.0.0-beta-11",
     "vuex": "^3.1.2"
   },
   "devDependencies": {
@@ -25,7 +24,6 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "vue-cli-plugin-mdb": "^2.0.3",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {

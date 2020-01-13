@@ -1,52 +1,58 @@
 <template>
   <div id="app">
-    <mdb-dropdown>
-      <mdb-dropdown-toggle color="primary" slot="toggle"
-        >Select Carpark</mdb-dropdown-toggle
-      >
-      <mdb-dropdown-menu>
-        <mdb-dropdown-item
-          :key="c.index"
-          v-for="c in this.$store.getters.carParkNames"
-          >{{ c.Tables_in_tfl }}</mdb-dropdown-item
-        >
-      </mdb-dropdown-menu>
-    </mdb-dropdown>
+    <div class="md-layout md-gutter md-alignment-center">
+      <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100"></div>
 
-    <mdb-dropdown>
-      <mdb-dropdown-toggle color="primary" slot="toggle"
-        >Select Day</mdb-dropdown-toggle
-      >
-      <mdb-dropdown-menu>
-        <mdb-dropdown-item :key="d.index" v-for="d in this.days">{{
-          d
-        }}</mdb-dropdown-item>
-      </mdb-dropdown-menu>
-    </mdb-dropdown>
+      <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
+        <md-field>
+          <label>Choose a day</label>
+          <md-select
+            @md-selected="update()"
+            v-model="currentday"
+            name="days"
+            id="days"
+          >
+            <md-option
+              :key="index"
+              v-for="(val, day, index) in days"
+              :value="val"
+            >{{ day }}</md-option>
+          </md-select>
+        </md-field>
 
-    <BarChartContainer></BarChartContainer>
+        <md-field>
+          <label for="currentCarPark">Choose a Carpark</label>
+          <md-select
+            @md-selected="update()"
+            v-model="currentCarPark"
+            name="currentCarPark"
+            id="currentCarPark"
+          >
+            <md-option
+              :key="c.index"
+              v-for="c in this.$store.getters.carParkNames"
+              :value="c.Tables_in_tfl"
+            >{{ c.Tables_in_tfl }}</md-option>
+          </md-select>
+        </md-field>
+
+        <BarChartContainer></BarChartContainer>
+      </div>
+      <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100"></div>
+
+    </div>
   </div>
 </template>
 
 <script>
 import BarChartContainer from "./components/BarChartContainer";
-import {
-  mdbDropdown,
-  mdbDropdownItem,
-  mdbDropdownMenu,
-  mdbDropdownToggle
-} from "mdbvue";
 
 export default {
   name: "app",
   components: {
-    BarChartContainer,
-    mdbDropdown,
-    mdbDropdownItem,
-    mdbDropdownMenu,
-    mdbDropdownToggle
+    BarChartContainer
   },
-  data() {
+  data () {
     return {
       days: {
         Monday: 0,
@@ -56,13 +62,20 @@ export default {
         Friday: 4,
         Saturday: 5,
         Sunday: 6
-      }
+      },
+      currentCarPark: "Barkingside_Stn",
+      currentday: "0",
     };
   },
-  methods: {},
-  mounted() {
+  methods: {
+    update () {
+      this.$store.dispatch("loadDailyData", { station: this.currentCarPark, day: this.currentday });
+      console.log(this.currentCarPark, this.currentday)
+    }
+  },
+  async mounted () {
     this.$store.dispatch("loadCarParkNames");
-    this.$store.dispatch("loadDailyData");
+    this.update()
   }
 };
 </script>

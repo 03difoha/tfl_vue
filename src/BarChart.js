@@ -14,5 +14,10 @@ export default {
   },
   mounted() {
     this.renderChart(this.chartdata, this.options);
+  },
+  watch: {
+    chartdata: function() {
+      this.renderChart(this.chartdata, this.options);
+    }
   }
 };
