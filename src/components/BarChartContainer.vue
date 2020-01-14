@@ -3,14 +3,13 @@
     <Bar-chart
       v-if="this.$store.getters.dailyChart"
       :chartdata="this.$store.getters.dailyChart"
-      :options="options"
     />
-    {{ this.$store.getters.dailyChart }}
   </div>
 </template>
 
 <script>
-import BarChart from "../BarChart";
+import BarChart from "../BarChart.vue";
+
 
 export default {
   name: "BarChartContainer",
@@ -22,6 +21,6 @@ export default {
       responsive: true
     }
   }),
-  mounted() {}
+  mounted () { }
 };
 </script>
