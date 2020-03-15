@@ -4,6 +4,9 @@ import axios from "axios";
 
 Vue.use(Vuex);
 
+const API_ADDRESS = "ec2-3-81-61-32.compute-1.amazonaws.com";
+// const PORT = 3000;
+
 export const store = new Vuex.Store({
   state: {
     dailyChart: false,
@@ -11,8 +14,9 @@ export const store = new Vuex.Store({
   },
   actions: {
     async loadDailyData({ commit }, req) {
+      console.log(req);
       await axios
-        .get(`http://localhost:3000/dailyChart/${req.station}/${req.day}`)
+        .get(`http://${API_ADDRESS}/dailyChart/${req.station}/${req.day}`)
         .then(result => {
           commit("change", result.data);
         })
@@ -22,8 +26,9 @@ export const store = new Vuex.Store({
     },
     loadCarParkNames({ commit }) {
       axios
-        .get("http://localhost:3000/carParkNames")
+        .get(`http://${API_ADDRESS}/carParkNames`)
         .then(result => {
+          console.log(result);
           commit("setCarparkNames", result.data);
         })
         .catch(error => {

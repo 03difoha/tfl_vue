@@ -15,8 +15,8 @@
             <md-option
               :key="c.index"
               v-for="c in this.$store.getters.carParkNames"
-              :value="c.Tables_in_tfl"
-            >{{ c.Tables_in_tfl }}</md-option>
+              :value="c.Tables_in_TFL"
+            >{{ c.Tables_in_TFL }}</md-option>
           </md-select>
         </md-field>
 
