@@ -1,70 +1,90 @@
 <script>
-import { Line } from 'vue-chartjs'
+import { Line } from "vue-chartjs";
 
 export default {
   extends: Line,
   props: {
     labels: {
-      type: Array,
-      default: () => ['A', 'B', 'C']
+      type: Array
     },
-    datalabel: {
+    chartTitle: {
       type: String,
-      default: 'Downloads per Week'
+      default: "Occupied parking spaces"
     },
     chartdata: {
       type: Array,
       default: () => [100, 40, 106]
     }
   },
-  data () {
+  data() {
     return {
       gradient: null
-    }
+    };
   },
   methods: {
-    update () {
-      this.renderChart({
-        labels: this.labels,
-        datasets: [
-          {
-            label: this.datalabel,
-            pointBackgroundColor: ["#EDF72A", "#E2EC2E", "#D8E233", "#CED837", "#C4CD3C", "#B9C341", "#AFB945", "#A5AF4A", "#9BA44E", "#919A53", "#869058", "#7C865C", "#727B61", "#687165", "#5D676A", "#535D6F", "#495273", "#3F4878", "#353E7C", "#2A3481", "#202986", "#161F8A", "#0C158F", "#020B94"],
-            borderWidth: 0,
-            pointColor: ["green", "#E2EC2E", "#D8E233", "#CED837", "#C4CD3C", "#B9C341", "#AFB945", "#A5AF4A", "#9BA44E", "#919A53", "#869058", "#7C865C", "#727B61", "#687165", "#5D676A", "#535D6F", "#495273", "#3F4878", "#353E7C", "#2A3481", "#202986", "#161F8A", "#0C158F", "#020B94"],
-            backgroundColor: this.gradient,
-            data: this.chartdata
-          }
-        ]
-      }, { responsive: true, maintainAspectRatio: false })
+    update() {
+      this.renderChart(
+        {
+          labels: this.labels,
+          datasets: [
+            {
+              label: this.chartTitle,
+              pointBackgroundColor: [
+                "#020211",
+                "#1e172a",
+                "#3c2441",
+                "#602e52",
+                "#88395d",
+                "#af4560",
+                "#d2575c",
+                "#ef6f52",
+                "#ff8e43",
+                "#ffb131",
+                "#ffd71e",
+                "#fefe23",
+                "#fefe23",
+                "#ffd71e",
+                "#ffb131",
+                "#ff8e43",
+                "#ef6f52",
+                "#d2575c",
+                "#af4560",
+                "#88395d",
+                "#602e52",
+                "#3c2441",
+                "#1e172a",
+                "#020211"
+              ],
+              borderWidth: 0,
+              backgroundColor: this.gradient,
+              data: this.chartdata
+            }
+          ]
+        },
+        { responsive: true, maintainAspectRatio: false }
+      );
     }
   },
 
+  mounted() {
+    this.gradient = this.$refs.canvas
+      .getContext("2d")
+      .createLinearGradient(0, 0, 0, 300);
 
+    this.gradient.addColorStop(0, "rgba(255, 0,0, 0.5)");
+    this.gradient.addColorStop(0.5, "rgba(255, 0, 0, 0.25)");
+    this.gradient.addColorStop(1, "rgba(0, 255, 128, 0.25)");
 
-
-
-  mounted () {
-    this.gradient = this.$refs.canvas.getContext('2d').createLinearGradient(0, 0, 0, 300)
-
-
-    this.gradient.addColorStop(0, 'rgba(255, 0,0, 0.5)')
-    this.gradient.addColorStop(0.5, 'rgba(255, 0, 0, 0.25)');
-    this.gradient.addColorStop(1, 'rgba(0, 255, 128, 0.25)');
-
-    this.update()
-
-
-
+    this.update();
   },
   watch: {
-    chartdata: function () {
-      this.update()
+    chartdata: function() {
+      for (var i of this.labels) {
+        console.log(i);
+      }
+
+      this.update();
     }
   }
-}
+};
 </script>
-
-
-
-
