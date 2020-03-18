@@ -61,7 +61,19 @@ export default {
             }
           ]
         },
-        { responsive: true, maintainAspectRatio: false }
+        {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true
+                }
+              }
+            ]
+          }
+        }
       );
     }
   },
@@ -79,10 +91,6 @@ export default {
   },
   watch: {
     chartdata: function() {
-      for (var i of this.labels) {
-        console.log(i);
-      }
-
       this.update();
     }
   }

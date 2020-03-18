@@ -4,7 +4,6 @@ import axios from "axios";
 
 Vue.use(Vuex);
 
-// const API_ADDRESS = "ec2-3-81-61-32.compute-1.amazonaws.com";
 const API_ADDRESS = "localhost:3000";
 
 export const store = new Vuex.Store({
@@ -18,7 +17,6 @@ export const store = new Vuex.Store({
         .get(`http://${API_ADDRESS}/dailyChart/${req.station}/${req.day}`)
         .then(result => {
           commit("change", result.data);
-          console.log(result.data);
         })
         .catch(error => {
           throw new Error(`API ${error}`);
@@ -40,7 +38,12 @@ export const store = new Vuex.Store({
       state.dailyChart = dailyChart;
     },
     setCarparkNames(state, carParkNames) {
-      state.carParkNames = carParkNames;
+      let namesFormatted = {};
+      for (let i of carParkNames) {
+        var current = i.Tables_in_TFL.replace(/_/gi, " ");
+        namesFormatted[current.replace("Stn", "Station")] = i.Tables_in_TFL;
+      }
+      state.carParkNames = namesFormatted;
     }
   },
   getters: {
