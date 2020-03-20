@@ -1,44 +1,47 @@
 <template>
   <div id="app">
-    <div class="md-layout md-gutter md-alignment-center">
-      <div
-        class="md-layout-item md-medium-size-60 md-small-size-70 md-xsmall-size-90"
-      >
-        <h1 class="display-1">Parking Planner</h1>
-        <div class="md-alignment-right">
-          <h3 class="h2-responsive">
-            Parking in London can be a pain. In 2018-2019 alone TFL issued
-            <a
-              href="https://www.londoncouncils.gov.uk/services/parking-services/parking-and-traffic/parking-information-professionals/information"
-              >3,804,343</a
-            >
-            Penalty Charge Notices (PCN) across London for parking violations
-          </h3>
-        </div>
+    <header>
+      <h1 class="display-1">Parking Planner</h1>
+    </header>
+
+    <div class="md-layout md-alignment-center md-gutter">
+      <div class="left-col md-layout-item md-medium-size-40 md-small-size-90 md-xsmall-size-95 md-gutter">
+        <img
+          id="car"
+          src="../img/car_image.svg"
+        />
+        <h3 class="h2-responsive">
+          Parking in London can be a pain. In 2018-2019 alone TFL issued
+          <a href="https://www.londoncouncils.gov.uk/services/parking-services/parking-and-traffic/parking-information-professionals/information">3,804,343</a>
+          Penalty Charge Notices (PCN) across London for parking violations
+        </h3>
 
         <md-tabs>
-          <md-tab id="tab-pages-1" md-label="What does this app do?"
-            >While some apps can find you a free parking space, not all can
-            guarantee it won't be taken when you arrive. Those that do may
+          <md-tab
+            id="tab-pages-1"
+            md-label="What does this app do?"
+          >While some apps find free parking spaces, not all can
+            guarantee it'll free when you arrive. Those that do may
             require a booking fee to be paid to secure the spot. This Parking
-            Planner uses historic data from TFL to plot the average number of
-            free spaces at any time at a number of car parks around London, so
-            if you can't afford to pay up front fees to book spaces or pay
-            subcription fees to parking apps, you can plan your journey
-            accordingly to increase your chances of finding a spot where you
-            need it.</md-tab
-          >
-          <md-tab id="tab-pages-2" md-label="How does it work?"
-            >A script pulls TFL data and writes to a MYSQL DB every 15 minutes
-            with the current numer of free spaces. This Vue application speaks
-            to a Node API which grabs the relevant data does some simple maths
-            to create hourly averages and outputs in a format friendly to
-            chart.js. All services are running on AWS EC2 instances. The script
-            that pulls data from the TFL API runs 24 hours a day so the average
-            with get more acurate over time.
+            Planner uses TFL data to plot the average number of
+            free spaces at various car parks around London, avoid
+            fees by planning your journey accordingly to increase your chances
+            of finding a spot where you
+            need it.</md-tab>
+          <md-tab
+            id="tab-pages-2"
+            md-label="How does it work?"
+          >A script pulls data from the TFL API and writes to a MYSQL DB every
+            15 minutes with the current numer of free spaces. A node API sends
+            requested data to this Vue frontend, which is then displayed using
+            chart.js. Each service runs on its own AWS EC2 instance. The script
+            that pulls data from the TFL API runs 24 hours a day so averages get
+            more acurate over time.
           </md-tab>
         </md-tabs>
+      </div>
 
+      <div class="right-col md-layout-item md-medium-size-60 md-small-size-90 md-xsmall-size-95 ">
         <md-field>
           <label for="currentCarPark">Choose a Carpark</label>
           <md-select
@@ -51,8 +54,7 @@
               :key="index"
               v-for="(key, val, index) in this.$store.getters.carParkNames"
               :value="key"
-              >{{ val }}</md-option
-            >
+            >{{ val }}</md-option>
           </md-select>
         </md-field>
 
@@ -68,23 +70,35 @@
               :key="index"
               v-for="(key, val, index) in days"
               :value="val"
-              >{{ key }}</md-option
-            >
+            >{{ key }}</md-option>
           </md-select>
         </md-field>
 
         <Line-Chart
+          class="chart"
           v-if="this.$store.getters.dailyChart"
           :chartdata="this.$store.getters.dailyChart.datasets[0].data"
           :labels="this.$store.getters.dailyChart.labels"
           :chartTitle="
-            `Occupied parking spaces at ${this.currentCarPark} on ${
+            `Occupied spaces at ${this.currentLabel} on ${
               days[this.currentDay]
             }`
           "
         ></Line-Chart>
       </div>
     </div>
+    <footer>
+      Built by Harry Difolco
+      <a href="https://github.com/03difoha">
+        <img
+          class="icon"
+          src="../img/github_icon.png"
+        /></a><br />
+      car illustration by
+      <a href="https://www.freepik.com/free-photos-vectors/car">
+        macrovector
+      </a>
+    </footer>
   </div>
 </template>
 
@@ -96,7 +110,7 @@ export default {
   components: {
     LineChart
   },
-  data() {
+  data () {
     return {
       days: {
         0: "Monday",
@@ -108,20 +122,23 @@ export default {
         6: "Sunday"
       },
       currentCarPark: "Barkingside_Stn",
+      currentLabel: "",
       currentDay: 0
     };
   },
   methods: {
-    update() {
+    update () {
       this.$store.dispatch("loadDailyData", {
         station: this.currentCarPark,
         day: this.currentDay
       });
     }
   },
-  async mounted() {
+  async mounted () {
     this.$store.dispatch("loadCarParkNames");
     this.update();
+    this.currentLabel = this.currentCarPark.slice(0, -4) + " Station"
+
   }
 };
 </script>
@@ -133,8 +150,49 @@ export default {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
   color: #2c3e50;
-  margin-top: 60px;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+@media (min-width: 959px) {
+  .left-col {
+    padding-left: 40px !important;
+  }
+  .right-col {
+    padding-right: 40px !important;
+  }
+
+  .chart {
+    padding-top: 3em;
+  }
+}
+
+footer,
+header {
+  background-color: #3b494c;
+  color: aliceblue;
+  text-align: center;
+  padding: 5px;
+}
+
+footer {
+  margin-top: 2em;
+}
+
+.icon {
+  height: 20px !important;
+}
+
+#car {
+  padding-top: 2em;
+  padding-bottom: 1em;
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

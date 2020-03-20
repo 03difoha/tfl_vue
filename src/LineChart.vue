@@ -16,13 +16,13 @@ export default {
       default: () => [100, 40, 106]
     }
   },
-  data() {
+  data () {
     return {
       gradient: null
     };
   },
   methods: {
-    update() {
+    update () {
       this.renderChart(
         {
           labels: this.labels,
@@ -72,13 +72,18 @@ export default {
                 }
               }
             ]
+          },
+          legend: {
+            labels: {
+              boxWidth: 0,
+            }
           }
         }
       );
     }
   },
 
-  mounted() {
+  mounted () {
     this.gradient = this.$refs.canvas
       .getContext("2d")
       .createLinearGradient(0, 0, 0, 300);
@@ -90,7 +95,7 @@ export default {
     this.update();
   },
   watch: {
-    chartdata: function() {
+    chartdata: function () {
       this.update();
     }
   }
