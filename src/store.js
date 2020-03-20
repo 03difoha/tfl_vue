@@ -13,9 +13,13 @@ export const store = new Vuex.Store({
   },
   actions: {
     async loadDailyData({ commit }, req) {
+      console.log(req);
       await axios
-        .get(`http://${API_ADDRESS}/dailyChart/${req.station}/${req.day}`)
+        .get(
+          `http://${API_ADDRESS}/dailyChart/${req.station}/${req.day}/${req.access}`
+        )
         .then(result => {
+          console.log(result.data);
           commit("change", result.data);
         })
         .catch(error => {

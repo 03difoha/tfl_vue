@@ -42,37 +42,60 @@
       </div>
 
       <div class="right-col md-layout-item md-medium-size-60 md-small-size-90 md-xsmall-size-95 ">
-        <md-field>
-          <label for="currentCarPark">Choose a Carpark</label>
-          <md-select
-            @md-selected="update()"
-            v-model="currentCarPark"
-            name="currentCarPark"
-            id="currentCarPark"
-          >
-            <md-option
-              :key="index"
-              v-for="(key, val, index) in this.$store.getters.carParkNames"
-              :value="key"
-            >{{ val }}</md-option>
-          </md-select>
-        </md-field>
 
-        <md-field>
-          <label>Choose a day</label>
-          <md-select
-            @md-selected="update()"
-            v-model="currentDay"
-            name="days"
-            id="days"
-          >
-            <md-option
-              :key="index"
-              v-for="(key, val, index) in days"
-              :value="val"
-            >{{ key }}</md-option>
-          </md-select>
-        </md-field>
+        <div class="md-layout-item md-layout md-gutter">
+          <div class="md-layout-item md-size-50 md-xsmall-size-95">
+            <md-field>
+              <label for="currentCarPark">Choose a Carpark</label>
+              <md-select
+                @md-selected="update()"
+                v-model="currentCarPark"
+                name="currentCarPark"
+                id="currentCarPark"
+              >
+                <md-option
+                  :key="index"
+                  v-for="(key, val, index) in this.$store.getters.carParkNames"
+                  :value="key"
+                >{{ val }}</md-option>
+              </md-select>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-size-50 md-xsmall-size-95">
+            <md-field>
+              <label>Choose a day</label>
+              <md-select
+                @md-selected="update()"
+                v-model="currentDay"
+                name="days"
+                id="days"
+              >
+                <md-option
+                  :key="index"
+                  v-for="(key, val, index) in days"
+                  :value="val"
+                >{{ key }}</md-option>
+              </md-select>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-size-100 md-xsmall-size-95">
+            <md-field>
+              <label>Access Type</label>
+              <md-select
+                @md-selected="update()"
+                v-model="currentAccess"
+                name="access"
+                id="access"
+              >
+                <md-option
+                  :key="index"
+                  v-for="(key, val, index) in accessTypes"
+                  :value="key"
+                >{{ val }}</md-option>
+              </md-select>
+            </md-field>
+          </div>
+        </div>
 
         <Line-Chart
           class="chart"
@@ -123,14 +146,17 @@ export default {
       },
       currentCarPark: "Barkingside_Stn",
       currentLabel: "",
-      currentDay: 0
+      currentDay: 0,
+      currentAccess: 'reg',
+      accessTypes: { 'Non-disabled': 'reg', 'Disabled': 'dis' }
     };
   },
   methods: {
     update () {
       this.$store.dispatch("loadDailyData", {
         station: this.currentCarPark,
-        day: this.currentDay
+        day: this.currentDay,
+        access: this.currentAccess
       });
     }
   },
@@ -164,7 +190,8 @@ export default {
   }
 
   .chart {
-    padding-top: 3em;
+    margin-top: 3em;
+    height: 100%;
   }
 }
 
