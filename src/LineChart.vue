@@ -14,6 +14,9 @@ export default {
     chartdata: {
       type: Array,
       default: () => [100, 40, 106]
+    },
+    max: {
+      type: Number
     }
   },
   data () {
@@ -68,7 +71,10 @@ export default {
             yAxes: [
               {
                 ticks: {
-                  beginAtZero: true
+                  beginAtZero: true,
+                  max: this.max,
+                  callback: function (value) { if (value % 1 === 0) { return value; } }
+
                 }
               }
             ]
@@ -84,6 +90,7 @@ export default {
   },
 
   mounted () {
+    console.log(this.chartdata)
     this.gradient = this.$refs.canvas
       .getContext("2d")
       .createLinearGradient(0, 0, 0, 300);

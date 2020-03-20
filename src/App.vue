@@ -11,7 +11,7 @@
           src="../img/car_image.svg"
         />
         <h3 class="h2-responsive">
-          Parking in London can be a pain. In 2018-2019 alone TFL issued
+          Parking in London can be a pain. In 2018-2019 TFL issued
           <a href="https://www.londoncouncils.gov.uk/services/parking-services/parking-and-traffic/parking-information-professionals/information">3,804,343</a>
           Penalty Charge Notices (PCN) across London for parking violations
         </h3>
@@ -21,10 +21,10 @@
             id="tab-pages-1"
             md-label="What does this app do?"
           >While some apps find free parking spaces, not all can
-            guarantee it'll free when you arrive. Those that do may
+            guarantee it'll be free when you arrive. Those that do may
             require a booking fee to be paid to secure the spot. This Parking
             Planner uses TFL data to plot the average number of
-            free spaces at various car parks around London, avoid
+            free spaces at various car parks around London. Avoid
             fees by planning your journey accordingly to increase your chances
             of finding a spot where you
             need it.</md-tab>
@@ -32,7 +32,7 @@
             id="tab-pages-2"
             md-label="How does it work?"
           >A script pulls data from the TFL API and writes to a MYSQL DB every
-            15 minutes with the current numer of free spaces. A node API sends
+            15 minutes with the current number of free spaces. A node API sends
             requested data to this Vue frontend, which is then displayed using
             chart.js. Each service runs on its own AWS EC2 instance. The script
             that pulls data from the TFL API runs 24 hours a day so averages get
@@ -41,66 +41,65 @@
         </md-tabs>
       </div>
 
-      <div class="right-col md-layout-item md-medium-size-60 md-small-size-90 md-xsmall-size-95 ">
+      <div class="right-col md-gutter md-layout md-layout-item md-medium-size-60 md-small-size-90 md-xsmall-size-95 ">
 
-        <div class="md-layout-item md-layout md-gutter">
-          <div class="md-layout-item md-size-50 md-xsmall-size-95">
-            <md-field>
-              <label for="currentCarPark">Choose a Carpark</label>
-              <md-select
-                @md-selected="update()"
-                v-model="currentCarPark"
-                name="currentCarPark"
-                id="currentCarPark"
-              >
-                <md-option
-                  :key="index"
-                  v-for="(key, val, index) in this.$store.getters.carParkNames"
-                  :value="key"
-                >{{ val }}</md-option>
-              </md-select>
-            </md-field>
-          </div>
-          <div class="md-layout-item md-size-50 md-xsmall-size-95">
-            <md-field>
-              <label>Choose a day</label>
-              <md-select
-                @md-selected="update()"
-                v-model="currentDay"
-                name="days"
-                id="days"
-              >
-                <md-option
-                  :key="index"
-                  v-for="(key, val, index) in days"
-                  :value="val"
-                >{{ key }}</md-option>
-              </md-select>
-            </md-field>
-          </div>
-          <div class="md-layout-item md-size-100 md-xsmall-size-95">
-            <md-field>
-              <label>Access Type</label>
-              <md-select
-                @md-selected="update()"
-                v-model="currentAccess"
-                name="access"
-                id="access"
-              >
-                <md-option
-                  :key="index"
-                  v-for="(key, val, index) in accessTypes"
-                  :value="key"
-                >{{ val }}</md-option>
-              </md-select>
-            </md-field>
-          </div>
+        <div class="md-layout-item md-size-50 md-xsmall-size-100">
+          <md-field>
+            <label for="currentCarPark">Choose a Carpark</label>
+            <md-select
+              @md-selected="update()"
+              v-model="currentCarPark"
+              name="currentCarPark"
+              id="currentCarPark"
+            >
+              <md-option
+                :key="index"
+                v-for="(key, val, index) in this.$store.getters.carParkNames"
+                :value="key"
+              >{{ val }}</md-option>
+            </md-select>
+          </md-field>
+        </div>
+        <div class="md-layout-item md-size-50 md-xsmall-size-100">
+          <md-field>
+            <label>Choose a day</label>
+            <md-select
+              @md-selected="update()"
+              v-model="currentDay"
+              name="days"
+              id="days"
+            >
+              <md-option
+                :key="index"
+                v-for="(key, val, index) in days"
+                :value="val"
+              >{{ key }}</md-option>
+            </md-select>
+          </md-field>
+        </div>
+        <div class="md-layout-item md-size-100 md-xsmall-size-100">
+          <md-field>
+            <label>Access Type</label>
+            <md-select
+              @md-selected="update()"
+              v-model="currentAccess"
+              name="access"
+              id="access"
+            >
+              <md-option
+                :key="index"
+                v-for="(key, val, index) in accessTypes"
+                :value="key"
+              >{{ val }}</md-option>
+            </md-select>
+          </md-field>
         </div>
 
         <Line-Chart
-          class="chart"
+          class="chart md-layout-item md-size-100"
           v-if="this.$store.getters.dailyChart"
           :chartdata="this.$store.getters.dailyChart.datasets[0].data"
+          :max="this.$store.getters.dailyChart.max"
           :labels="this.$store.getters.dailyChart.labels"
           :chartTitle="
             `Occupied spaces at ${this.currentLabel} on ${
