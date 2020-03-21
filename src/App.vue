@@ -94,10 +94,14 @@
             </md-select>
           </md-field>
         </div>
-
+        <img
+          id="spinner"
+          v-if="!this.$store.getters.loaded"
+          src="../img/spinner.gif"
+        >
         <Line-Chart
-          class="chart md-layout-item md-size-100"
           v-if="this.$store.getters.dailyChart"
+          class="chart md-layout-item md-size-100"
           :chartdata="this.$store.getters.dailyChart.datasets[0].data"
           :max="this.$store.getters.dailyChart.max"
           :labels="this.$store.getters.dailyChart.labels"
@@ -147,7 +151,8 @@ export default {
       currentLabel: "",
       currentDay: 0,
       currentAccess: 'reg',
-      accessTypes: { 'Non-disabled': 'reg', 'Disabled': 'dis' }
+      accessTypes: { 'Non-disabled': 'reg', 'Disabled': 'dis' },
+      loaded: false
     };
   },
   methods: {
@@ -157,6 +162,7 @@ export default {
         day: this.currentDay,
         access: this.currentAccess
       });
+
     }
   },
   async mounted () {
@@ -218,7 +224,15 @@ footer {
   margin: auto;
 
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+}
+
+#spinner {
+  height: 100px;
+  width: 100px;
+  position: fixed;
+  left: 50%;
+  margin-left: -50px;
+  top: 50%;
+  margin-top: -50px;
 }
 </style>

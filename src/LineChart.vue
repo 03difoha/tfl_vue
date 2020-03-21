@@ -90,7 +90,6 @@ export default {
   },
 
   mounted () {
-    console.log(this.chartdata)
     this.gradient = this.$refs.canvas
       .getContext("2d")
       .createLinearGradient(0, 0, 0, 300);
@@ -98,6 +97,7 @@ export default {
     this.gradient.addColorStop(0, "rgba(255, 0,0, 0.5)");
     this.gradient.addColorStop(0.5, "rgba(255, 0, 0, 0.25)");
     this.gradient.addColorStop(1, "rgba(0, 255, 128, 0.25)");
+
 
     this.update();
   },

@@ -4,23 +4,24 @@ import axios from "axios";
 
 Vue.use(Vuex);
 
-const API_ADDRESS = "localhost:3000";
+const API_ADDRESS = "ec2-3-81-61-32.compute-1.amazonaws.com";
 
 export const store = new Vuex.Store({
   state: {
     dailyChart: false,
-    carParkNames: []
+    carParkNames: [],
+    loaded: false
   },
   actions: {
     async loadDailyData({ commit }, req) {
-      console.log(req);
+      commit("changeLoaded", false);
       await axios
         .get(
           `http://${API_ADDRESS}/dailyChart/${req.station}/${req.day}/${req.access}`
         )
         .then(result => {
-          console.log(result.data);
-          commit("change", result.data);
+          commit("updateChart", result.data);
+          commit("changeLoaded", true);
         })
         .catch(error => {
           throw new Error(`API ${error}`);
@@ -38,7 +39,7 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
-    change(state, dailyChart) {
+    updateChart(state, dailyChart) {
       state.dailyChart = dailyChart;
     },
     setCarparkNames(state, carParkNames) {
@@ -48,10 +49,14 @@ export const store = new Vuex.Store({
         namesFormatted[current.replace("Stn", "Station")] = i.Tables_in_TFL;
       }
       state.carParkNames = namesFormatted;
+    },
+    changeLoaded(state, loaded) {
+      state.loaded = loaded;
     }
   },
   getters: {
     dailyChart: state => state.dailyChart,
-    carParkNames: state => state.carParkNames
+    carParkNames: state => state.carParkNames,
+    loaded: state => state.loaded
   }
 });
