@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "start": "vue-cli-service serve --open"
+    "start": "vue-cli-service serve --open",
+    "deploy": "aws s3 sync dist/ s3://parking-planner-vue-frontend"
   },
   "dependencies": {
     "axios": "^0.19.1",
